@@ -1,0 +1,27 @@
+
+<% if @project.errors.any? %>
+  <h2>The following error occured</h2>
+  <ul>
+  <% @project.errors.messages.each do |msg| %>
+    <li><%= msg %></li>
+  <% end %>
+  </ul>
+<% end %>
+<%= form_with(model: @project, local: true) do |f|%>
+<p>
+<%= f.label :title%><br/>
+<%= f.text_field :title%>
+</p>
+<p>
+<%= f.label :description%><br/>
+<%= f.text_area :description%>
+</p>
+<p>
+<%= f.label :developers%><br/>
+<%# <%= f.collection_select(:user_ids, User.find_by user_role: 'QA' , :id, :name, { :prompt => "please select from below can not be empty"}, { :multiple =>true }) %>
+<%= f.collection_select(:developer_ids, User.where(:user_role=>'developer'), :id, :name_with_type,  { prompt: "Select Developers You want to Hire"}, { multiple: true, required: true }) %>
+</p>
+<p>
+<%= f.submit %>
+</p>
+<%end%>

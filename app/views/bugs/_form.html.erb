@@ -1,0 +1,92 @@
+
+<% if @bug.errors.any? %>
+  <h2>The following error occured</h2>
+  <ul>
+  <% @bug.errors.messages.each do |msg| %>
+    <li><%= msg %></li>
+  <% end %>
+  </ul>
+<% end %>
+<%= form_with(model: [@project,@bug], local: true) do |f|%>
+<p>
+<% if can? :create, Bug %>
+  <%= f.label :title%>
+  <br/>
+  <%= f.text_field :title%>
+  </p>
+  <%= f.label :discription%><br/>
+  <%= f.text_area :discription%><br/>
+  <%= f.label :deadline%><br/>
+  <%= f.date_field :deadline%><br/>
+  <%= f.label :type%><br/>
+  <%= f.select :bug_type ,options_for_select(Bug.bug_types.map {|key, value| [key.humanize, key]}, 0),{allow_blank: true},id: :bug_type_value  %> <br/>
+  <%end%>
+  <% if can? :edit, Bug %>
+    <% if !@bug.nil?%>
+      <%if @bug.bug_type == "feature"%>
+        <div id ="feature">
+        <%= f.select(:feature_status, (Bug.bug_statuses.keys - ['resolved']).map {|role| [role.titleize,role]}) %>
+      <%else%>
+        <div id ="bug">
+        <%= f.select(:bug_status, (Bug.bug_statuses.keys - ['completed']).map {|role| [role.titleize,role]})%>
+      </div>
+      <%end%>  
+    <%else%>
+      <%= f.label :Status%><br/>
+      <div id ="bug">
+        <%= f.select(:bug_status, (Bug.bug_statuses.keys - ['completed']).map {|role| [role.titleize,role]})%>
+      </div>
+      <div id ="feature" style="display: none">
+        <%= f.select(:feature_status, (Bug.bug_statuses.keys - ['resolved']).map {|role| [role.titleize,role]}) %>
+    </div>
+    <%end%>
+  <%end%>
+  <br/>
+<% if can? :create, Bug %>
+  <%= f.label :images%><br/>
+  <%= f.file_field  :images, multiple: true%><br/>
+<%end%>
+<p>
+<%= f.submit %>
+</p>
+<%end%>
+<script>
+bug_type_change = document.getElementById("bug_type_value");
+// console.log(bug_type_change);
+bug_type_change.addEventListener("load", update_value)
+// console.log(bug_type_change.value);
+
+bug_type_change.addEventListener("change", update_value)
+function update_value() {
+  bug_type_change = document.getElementById("bug_type_value").value
+  console.log(bug_type_change)
+  toggle_hidden_on_bug_type(bug_type_change)
+}
+    // toggle_hidden_on_bug_type(bug_type_change)
+
+
+
+function toggle_hidden_on_bug_type(type) {
+  console.log(type)
+  if (type == "feature")
+  {
+    b = document.getElementById("bug")
+    f = document.getElementById("feature")
+    b.style.display = "none";
+    f.style.display = "block";
+  }
+  else
+  {
+    b = document.getElementById("feature")
+    f = document.getElementById("bug")
+    b.style.display = "none";
+    f.style.display = "block";
+  } 
+  // if (b.style.display === "none") {
+  //   b.style.display = "block";
+  // } else {
+  //   b.style.display = "none";
+  // }
+}
+ 
+</script>

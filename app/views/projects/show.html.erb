@@ -1,0 +1,14 @@
+<h1>This is Project Page</h1>
+<p><strong>Title: </strong><%= @project.title%></p>
+<p><strong>Description: </strong><%= @project.description%></p>
+<p><strong>Admin: </strong><%= @project.admin.name%></p>
+<p><strong>Developers: </strong>
+<% @project.developers.each do |developer| %>
+  <%= developer.name%>
+<% end %>
+</p>
+<%= link_to 'Bugs',project_bugs_path(@project,@bug)%>
+<% if can? :create, Bug %>
+  <%= link_to 'Create Bug',new_project_bug_path(@project,@bug)%>
+<% end%>
+ <%= link_to 'Back to main', projects_path%>

@@ -1,0 +1,17 @@
+<h1>This is Bugzila Homepage</h1>
+<% if user_signed_in?%>
+  <%= link_to 'Logout',destroy_user_session_path, :method => :delete %>
+  <br>
+<p>
+  <%= current_user.name%> |
+  <%= current_user.user_role%>
+</p>
+<p>
+<br>
+  <%= link_to 'Dashboard',dashboard_path %>
+
+</p>
+<%else%>  
+  <%= link_to 'Signin',user_session_path %>
+  <%= link_to 'Signup',new_user_registration_path %>
+<%end%>

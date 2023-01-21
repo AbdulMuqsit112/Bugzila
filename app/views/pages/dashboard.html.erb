@@ -1,0 +1,11 @@
+<h1>Dashboard</h1>
+<% if current_user.user_role == nil %>
+  <%= render 'root'%>
+<% elsif current_user.user_role == "admin" %>
+  <%= link_to 'See All Projects', projects_path%>
+  <%= link_to 'Create New Project', new_project_path%>
+<% elsif current_user.user_role == "qa" %>
+  <%= link_to 'See Assigned Projects', projects_path%>
+<% elsif current_user.user_role == "developer"%>
+  <%= link_to 'See Assigned Projects', projects_path%>
+<% end %>

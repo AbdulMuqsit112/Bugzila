@@ -1,0 +1,19 @@
+<h1>Bug Show Page</h1>
+<br>
+<h3>BUG Title: <%= @bug.title%></h3>
+<h3>Bug Description: <%= @bug.discription%></h3>
+<h3>Bug Status: <%= @bug.bug_status%></h3>
+<h3>Bug Type: <%= @bug.bug_type%></h3>
+<h3>QA: <%= @bug.qa.name%></h3>
+<%if !@bug.developer.nil?%>
+  <h3>Closed by: <%= @bug.developer.name%></h3> 
+<%end%>
+<h3>Images</h3>
+<% @bug.images.each do |image| %>
+<div style ="width:100px; height:100px">
+<%= image_tag(image, style:'width:100px; height:100px')%>
+</div>
+<% end %>
+<br>
+<%= link_to 'Back', project_bugs_path%>
+
